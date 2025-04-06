@@ -68,8 +68,18 @@
         console.log("Thème initial appliqué:", defaultTheme);
       })();
     </script>
-    <!-- Load theme detector with defer (not as module) -->
-    <script src="./js/theme-detector.js" defer></script>
+    <!-- Fix path to theme detector script for GitHub Pages deployment -->
+    <script>
+      // Dynamically determine correct path based on deployment environment
+      const base = location.hostname === 'amakran2003.github.io' ? '/Bazarmoderne' : '';
+      const scriptSrc = `${base}/js/theme-detector.js`;
+      
+      // Create and append the script dynamically with correct path
+      const script = document.createElement('script');
+      script.src = scriptSrc;
+      script.defer = true;
+      document.head.appendChild(script);
+    </script>
   </head>
   <body>
     <div id="root"></div>

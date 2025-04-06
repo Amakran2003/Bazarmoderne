@@ -14,7 +14,6 @@ function RootComponent() {
   const navigate = useNavigate();
   
   const handleSplashComplete = () => {
-    // With HashRouter, we just navigate to the route directly
     navigate('/home');
   };
 
@@ -100,31 +99,6 @@ function AppContent() {
 }
 
 export default function App() {
-  // Add mobile-specific error handling
-  useEffect(() => {
-    const handleError = (event: ErrorEvent) => {
-      console.error('Global error caught:', event.error);
-    };
-    
-    window.addEventListener('error', handleError);
-    
-    // Check if we're in a broken state and force refresh if needed
-    const checkNavigation = () => {
-      const hash = window.location.hash;
-      if (!hash && window.location.pathname !== '/') {
-        console.log('Detected navigation issue, redirecting to home');
-        window.location.href = window.location.origin + window.location.pathname + '#/home';
-      }
-    };
-    
-    // Run the check after a delay
-    setTimeout(checkNavigation, 1000);
-    
-    return () => {
-      window.removeEventListener('error', handleError);
-    };
-  }, []);
-
   return (
     <ThemeProvider>
       <Router>

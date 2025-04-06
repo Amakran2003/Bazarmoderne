@@ -3,25 +3,73 @@
 <head>
   <meta charset="utf-8">
   <title>Le Bazar Moderne</title>
-  <script type="text/javascript">
-    // Single Page Apps for GitHub Pages
-    // MIT License
-    // https://github.com/rafgraph/spa-github-pages
-    // This script takes the current URL and converts the path and query
-    // string into just a query string, and then redirects the browser
-    // to the new URL with only a query string and hash fragment.
-    var segmentCount = 1;
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
-      l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+  <script>
+    // GitHub Pages SPA router - improved version
+    (function() {
+      // This handles routing for single-page applications on GitHub Pages
+      // Source pattern based on https://github.com/rafgraph/spa-github-pages
+      
+      // Get the repo name from the path
+      var pathSegmentsToKeep = 1;
+      var repoName = location.pathname.split('/')[1];
+      
+      // Check if we're actually on GitHub Pages
+      var isGitHubPages = location.hostname === 'amakran2003.github.io';
+      
+      // Only redirect if we're on GitHub Pages
+      if (isGitHubPages) {
+        var l = window.location;
+        var newPath = l.protocol + '//' + l.hostname + '/' + repoName + '/?p=/' +
+          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash;
+          
+        console.log("Redirecting from 404 page to:", newPath);
+        window.location.href = newPath;
+      } else {
+        // For local development, redirect to root
+        window.location.href = '/';
+      }
+    })();
   </script>
 </head>
 <body>
-  <h2>Redirecting...</h2>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+      color: #333;
+    }
+    
+    .loading {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #FF3366;
+      border-radius: 50%;
+      border-top-color: #33CCFF;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      color: #FF3366;
+    }
+  </style>
+
+  <h2>Redirection...</h2>
+  <div class="loading"></div>
+  <p>Vous allez être redirigé vers Le Bazar Moderne</p>
 </body>
 </html>
