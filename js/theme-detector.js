@@ -6,40 +6,39 @@
     // Détecteur de mode sombre
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
-    // Fonction qui gère le changement de mode
+    // Function that handles theme changes - avoid template literals in CSS
     function handleDarkModeChange(e) {
-        const isDarkMode = e.matches;
-        applyTheme(isDarkMode ? 'dark' : 'light');
+        applyTheme(e.matches ? 'dark' : 'light');
     }
     
-    // Fonction pour appliquer le thème actuel du système si aucun thème n'est sauvegardé
+    // Function to apply system theme if no saved theme exists
     function applySystemTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (!savedTheme) {
-            const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            applyTheme(isDarkMode ? 'dark' : 'light');
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(isDark ? 'dark' : 'light');
         }
     }
     
-    // Fonction centrale pour appliquer un thème
+    // Core function to apply theme - don't use template literals for CSS variables
     function applyTheme(theme) {
         const html = document.documentElement;
         
-        // Supprimer les deux classes possibles
+        // Remove both possible classes
         html.classList.remove('dark', 'light');
         
-        // Ajouter la classe appropriée
+        // Add the appropriate class
         html.classList.add(theme);
         localStorage.setItem('theme', theme);
         document.documentElement.style.colorScheme = theme;
         
-        // Mettre à jour la meta tag theme-color
+        // Update theme-color meta tag
         const metaThemeColor = document.getElementById('theme-color');
         if (metaThemeColor) {
             metaThemeColor.setAttribute('content', theme === 'dark' ? '#121212' : '#ffffff');
         }
         
-        // Déclencher un événement personnalisé pour que React puisse le détecter
+        // Dispatch custom event for React to detect
         const themeChangeEvent = new CustomEvent('themeChanged', { 
             detail: { theme: theme } 
         });
@@ -48,10 +47,10 @@
         console.log(`Thème appliqué: ${theme}`);
     }
     
-    // Utiliser addEventListener pour les navigateurs modernes
+    // Use addEventListener for modern browsers
     darkModeMediaQuery.addEventListener('change', handleDarkModeChange);
     
-    // Compatibilité pour Safari plus ancien qui utilise deprecated .addListener
+    // Compatibility for older Safari which uses deprecated .addListener
     if (typeof darkModeMediaQuery.addListener === 'function') {
         darkModeMediaQuery.addListener(handleDarkModeChange);
     }
@@ -75,6 +74,6 @@
         }
     });
     
-    // Exposer la fonction applyTheme globalement pour permettre aux composants React de l'utiliser
+    // Expose applyTheme to window for global access
     window.applyTheme = applyTheme;
 })();
