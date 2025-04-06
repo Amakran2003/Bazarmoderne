@@ -14,6 +14,7 @@
       :root {
         --color-primary: #9b2226;
         --color-primary-hover: #660708;
+        --tw-ring-color: #FF3366; /* Fixed template literal issue */
       }
       
       body {
@@ -67,10 +68,10 @@
         console.log("Thème initial appliqué:", defaultTheme);
       })();
     </script>
-    <!-- Chargement anticipé du détecteur de thème -->
-    <script src="./js/theme-detector.js" type="text/javascript"></script>
-    <script type="module" crossorigin src="/Bazarmoderne/assets/index-DtjosyvN.js"></script>
-    <link rel="stylesheet" crossorigin href="/Bazarmoderne/assets/index-Y1_G-l6i.css">
+    <!-- Load theme detector with defer (not as module) -->
+    <script src="./js/theme-detector.js" defer></script>
+    <script type="module" crossorigin src="/Bazarmoderne/assets/index-DOjyyqAG.js"></script>
+    <link rel="stylesheet" crossorigin href="/Bazarmoderne/assets/index-CLR5lxJ5.css">
   </head>
   <body>
     <div id="root"></div>
