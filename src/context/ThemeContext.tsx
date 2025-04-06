@@ -57,6 +57,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const applyTheme = useCallback((currentTheme: Theme) => {
     if (typeof window === 'undefined') return;
     
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(currentTheme);
+    
+    // Set theme colors as CSS variables rather than template literals
+    document.documentElement.style.setProperty('--theme-primary-color', currentTheme === 'dark' ? '#e45a21' : '#9b2226');
+    document.documentElement.style.setProperty('--theme-secondary-color', currentTheme === 'dark' ? '#f8c136' : '#660708');
+    
     // Use our enhanced theme-detector.js if it's available
     if (window.applyTheme && typeof window.applyTheme === 'function') {
       window.applyTheme(currentTheme);

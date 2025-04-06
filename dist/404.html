@@ -2,35 +2,26 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Craft Burger Co.</title>
+  <title>Le Bazar Moderne</title>
   <script type="text/javascript">
-    (function() {
-      // On récupère le chemin actuel
-      var path = window.location.pathname;
-      
-      // On crée la redirection vers la page d'index avec le hash
-      var redirectUrl = window.location.origin + 
-                       (path.indexOf('/CraftBurgerCo') === 0 ? '/CraftBurgerCo' : '') + 
-                       '/#' + path.replace('/CraftBurgerCo', '');
-      
-      // Log pour debug
-      console.log('Redirection depuis:', path);
-      console.log('Redirection vers:', redirectUrl);
-      
-      // Rediriger
-      window.location.replace(redirectUrl);
-    })();
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    // This script takes the current URL and converts the path and query
+    // string into just a query string, and then redirects the browser
+    // to the new URL with only a query string and hash fragment.
+    var segmentCount = 1;
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+      l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
   </script>
 </head>
 <body>
-  <p style="text-align: center; padding-top: 50px; font-family: Arial, sans-serif;">
-    Redirection en cours...
-  </p>
-  <p style="text-align: center; font-family: Arial, sans-serif;">
-    <a href="/" style="color: #9b2226; text-decoration: underline;">
-      Cliquez ici si la redirection ne fonctionne pas
-    </a>
-  </p>
+  <h2>Redirecting...</h2>
 </body>
 </html>

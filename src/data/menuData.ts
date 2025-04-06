@@ -32,7 +32,7 @@ export interface SpecialtyItem {
   menuItemId: string;
 }
 
-// Menu categories and items
+// Menu categories and items - removed Parfums and Glaces categories
 export const menuCategories: MenuCategory[] = [
   {
     name: 'Boissons',
@@ -107,74 +107,23 @@ export const menuCategories: MenuCategory[] = [
         image: 'https://limirialogistic.fr/cdn/shop/files/3B4B194A-06DB-4044-A34F-2A25800C72DF.jpg?v=1719592111' 
       }
     ]
-  },
-  {
-    name: 'Parfums',
-    items: [
-      { 
-        id: 'parfum-sakura', 
-        name: 'Parfum Sakura Dreams', 
-        description: 'Parfum inspiré des jardins japonais. Notes de fleur de cerisier, jasmin et bois de santal.', 
-        price: '39,90€', 
-        image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=800&q=80' 
-      },
-      { 
-        id: 'parfum-ocean', 
-        name: 'Parfum Ocean Breeze', 
-        description: 'Fragrance fraîche et marine. Mélange de notes aquatiques, agrumes et ambre gris.', 
-        price: '34,90€', 
-        image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80' 
-      },
-      { 
-        id: 'parfum-midnight', 
-        name: 'Parfum Midnight Lotus', 
-        description: 'Parfum oriental mystérieux. Notes de lotus, vanille noire et patchouli.', 
-        price: '42,90€', 
-        image: 'https://images.unsplash.com/photo-1588405765997-0ac17849a0f5?auto=format&fit=crop&w=800&q=80' 
-      }
-    ]
-  },
-  {
-    name: 'Glaces',
-    items: [
-      { 
-        id: 'glace-matcha', 
-        name: 'Glace Matcha Japonaise', 
-        description: 'Crème glacée au thé vert matcha premium. Texture crémeuse et goût authentique.', 
-        price: '6,50€', 
-        image: 'https://images.unsplash.com/photo-1561845730-208ad5910553?auto=format&fit=crop&w=800&q=80' 
-      },
-      { 
-        id: 'mochi-glace', 
-        name: 'Mochi Glacé Assortiment', 
-        description: 'Boules de glace enrobées de pâte de riz. Assortiment de saveurs : mangue, fraise et chocolat.', 
-        price: '8,90€', 
-        image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80' 
-      },
-      { 
-        id: 'taiyaki-glace', 
-        name: 'Taiyaki Glacé', 
-        description: 'Gaufre japonaise en forme de poisson fourrée de glace vanille et garnie de fruits rouges.', 
-        price: '7,50€', 
-        image: 'https://images.unsplash.com/photo-1563805034758-0a2f585d2c9f?auto=format&fit=crop&w=800&q=80' 
-      }
-    ]
   }
+  // Parfums and Glaces categories removed
 ];
 
-// News items for the home page
+// News items for the home page - updated to feature a boisson instead of parfum
 export const newsItems: NewsItem[] = [
   {
     id: 1,
-    title: "Nouveaux parfums exotiques en boutique !",
-    description: "Découvrez notre nouvelle collection de parfums importés directement d'Asie avec des fragrances introuvables en France.",
+    title: "Nouveaux Red Bull en édition limitée !",
+    description: "Découvrez nos nouvelles saveurs de Red Bull importées directement du Japon avec des goûts introuvables en France.",
     date: "15 octobre 2025",
-    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=800&q=80",
-    link: "/menu?category=Parfums&item=parfum-sakura" 
+    image: "https://sweetandsoda.fr/uploads/media/OUd9yMQIFFzzHhqyve2M2TV3PmZwCbQzLfwNzwK9.png",
+    link: "/menu?category=Boissons&item=redbull-orange" 
   }
 ];
 
-// Specialty items for the home page
+// Specialty items for the home page - replaced Parfums and Glaces with additional Boissons
 export const specialties: SpecialtyItem[] = [
   {
     id: 1,
@@ -197,23 +146,23 @@ export const specialties: SpecialtyItem[] = [
     name: "JNR 100 000 Puffs",
     description: "Chicha électronique nouvelle génération",
     image: "https://jnrpuff.fr/wp-content/uploads/2025/02/JNR-Mega-Shisha-Hookah-10000.webp",
-    menuCategory: "Chicha",
+    menuCategory: "Puffs",
     menuItemId: "jnr-puff"
   },
   {
     id: 4,
-    name: "Parfum Sakura Dreams",
-    description: "Parfum inspiré des jardins japonais",
-    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=800&q=80",
-    menuCategory: "Parfums", 
-    menuItemId: "parfum-sakura"
+    name: "Red Bull Pêche Blanche",
+    description: "Édition été 2025 avec saveur de pêche blanche",
+    image: "https://epicerie-saintbrieuc.fr/wp-content/uploads/2025/02/redbull-peche-blanche-edition-summer-2025.png",
+    menuCategory: "Boissons", 
+    menuItemId: "redbull-peche"
   },
   {
     id: 5,
-    name: "Mochi Glacé Assortiment",
-    description: "Boules de glace enrobées de pâte de riz",
-    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80",
-    menuCategory: "Glaces",
-    menuItemId: "mochi-glace"
+    name: "Fanta Pomme Japonais",
+    description: "Rare boisson gazeuse à la pomme verte japonaise",
+    image: "https://osweetz.com/cdn/shop/files/Fanta_Asie_Apple_27f28a3d-c747-40ad-a9aa-72b5b56aa1a9.png?v=1733768220",
+    menuCategory: "Boissons",
+    menuItemId: "fanta-pomme"
   }
 ];

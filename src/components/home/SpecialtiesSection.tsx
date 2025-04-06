@@ -172,7 +172,7 @@ export default function SpecialtiesSection() {
                   ? "0px 1px 1px rgba(0, 0, 0, 0.1)" 
                   : "0px 1px 1px rgba(0, 0, 0, 0.5)"
               }}>
-              Nos Produits Vedettes
+              Boissons, Snacks & Puffs
             </h2>
             <motion.div 
               className="h-1 w-24 mt-2 rounded-full"
