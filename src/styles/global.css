@@ -1,0 +1,52 @@
+/* Global CSS variables to prevent template literal errors */
+:root {
+  /* Base theme colors */
+  --color-primary: #9b2226;
+  --color-primary-hover: #660708;
+  
+  /* Teen theme colors */
+  --teen-primary-color: #FF3366;
+  --teen-secondary-color: #33CCFF;
+  --teen-accent-color: #FFCC00;
+  
+  /* Ring color - hardcoded value */
+  --tw-ring-color: #FF3366;
+  
+  /* Menu item specific variables */
+  --menu-item-ring-color: #FF3366;
+  --menu-highlight-shadow: 0 10px 25px -5px rgba(255, 51, 102, 0.5), 0 8px 10px -6px rgba(51, 204, 255, 0.25);
+  
+  /* Contact form variables */
+  --contact-form-ring-color: #FF3366;
+  --contact-text-color: #333333;
+  --contact-bg-color: #ffffff;
+  --contact-border-color: rgba(255, 51, 102, 0.2);
+  
+  /* Additional variables */
+  --specialty-heading: #FF3366;
+  --specialty-text: #333333;
+  --specialty-card-bg: #ffffff;
+  --specialty-border: rgba(255, 51, 102, 0.2);
+  --primary-border-color: #FF336610;
+  --secondary-border-color: #33CCFF10;
+}
+
+/* Dark mode variables */
+html.dark {
+  --teen-primary-color: #FF3366;
+  --teen-secondary-color: #33CCFF;
+  --teen-accent-color: #FFCC00;
+  --tw-ring-color: #FF3366;
+  --specialty-heading: #FF3366;
+  --specialty-text: #f5f5f5;
+  --specialty-card-bg: #2d2d2d;
+  --specialty-border: rgba(51, 204, 255, 0.2);
+  
+  /* Dark mode contact form variables */
+  --contact-text-color: #f5f5f5;
+  --contact-bg-color: #1e1e1e;
+  --contact-border-color: rgba(51, 204, 255, 0.2);
+  
+  /* Menu item variables */
+  --menu-item-ring-color: #FF3366;
+}

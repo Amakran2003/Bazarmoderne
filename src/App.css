@@ -1,0 +1,36 @@
+/* Theme variables for consistent styling */
+:root {
+  /* Base theme colors */
+  --color-primary: #9b2226;
+  --color-primary-hover: #660708;
+  --color-secondary: #f8c136;
+  --color-background: #ffffff;
+  --color-card: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  
+  /* Teen theme colors */
+  --teen-primary-color: #FF3366;
+  --teen-secondary-color: #33CCFF;
+  --teen-accent-color: #FFCC00;
+  
+  /* Fix for the template literal error */
+  --tw-ring-color: #FF3366;
+}
+
+/* Dark mode variables */
+.dark {
+  --color-primary: #e45a21;
+  --color-primary-hover: #cc4e1a;
+  --color-secondary: #f8c136;
+  --color-background: #121212;
+  --color-card: #1e1e1e;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a1a1a1;
+  
+  /* Dark mode teen colors remain the same */
+  --teen-primary-color: #FF3366;
+  --teen-secondary-color: #33CCFF;
+  --teen-accent-color: #FFCC00;
+  --tw-ring-color: #FF3366;
+}

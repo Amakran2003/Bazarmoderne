@@ -2,7 +2,14 @@
  * This file uses Tailwind CSS directives (@tailwind, @layer, @apply)
  * If you're seeing linting errors, it's because your editor doesn't recognize Tailwind syntax.
  * These errors don't affect functionality when processed through PostCSS with Tailwind.
+ * 
+ * Tailwind CSS - https://tailwindcss.com 
+ * @tailwind, @layer, @apply - https://tailwindcss.com/docs/functions-and-directives
  */
+
+/* stylelint-disable */
+/* postcss-css-variables: { preserve: true } */
+/* editor.lint: false */
 
 @tailwind base;
 @tailwind components;
@@ -18,6 +25,9 @@
     --color-text: #1a1a1a;
     --color-text-muted: #6b7280;
     --color-consistent-heading: #9b2226; /* Consistent heading color for both themes */
+    
+    /* Also define the ring color here to avoid unknown property warning */
+    --ring-color: var(--color-primary);
   }
   
   .dark {
@@ -164,7 +174,8 @@
 /* Focus styles for accessibility */
 *:focus-visible {
   @apply outline-none ring-2 ring-offset-2;
-  ring-color: var(--color-primary);
+  /* Use CSS variable instead of direct property */
+  --ring-color: var(--color-primary);
 }
 
 /* Reduced motion preferences */

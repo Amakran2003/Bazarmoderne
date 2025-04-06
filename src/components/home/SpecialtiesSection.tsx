@@ -26,17 +26,28 @@ export default function SpecialtiesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Teen-friendly colors - matching the rest of the site
+  // Fixed teen colors - no template literals
   const teenColors = {
-    primary: '#FF3366', // Vibrant pink/red
-    secondary: '#33CCFF', // Bright blue
-    accent: '#FFCC00', // Bright yellow
-    heading: theme === 'light' ? '#FF3366' : '#FF3366', // Consistent heading color
+    primary: '#FF3366',
+    secondary: '#33CCFF',
+    accent: '#FFCC00',
+    heading: theme === 'light' ? '#FF3366' : '#FF3366', 
     text: theme === 'light' ? '#333333' : '#f5f5f5',
     cardBg: theme === 'light' ? '#ffffff' : '#2d2d2d',
-    gradient: `linear-gradient(90deg, #FF3366, #33CCFF)`,
+    gradient: 'linear-gradient(90deg, #FF3366, #33CCFF)',
     cardBorder: theme === 'light' ? 'rgba(255, 51, 102, 0.2)' : 'rgba(51, 204, 255, 0.2)',
   };
+
+  // Explicitly set CSS variables to avoid template literals in stylesheet
+  useEffect(() => {
+    // Set background and border colors directly
+    document.documentElement.style.setProperty('--specialty-heading', teenColors.heading);
+    document.documentElement.style.setProperty('--specialty-text', teenColors.text);
+    document.documentElement.style.setProperty('--specialty-card-bg', teenColors.cardBg);
+    document.documentElement.style.setProperty('--specialty-border', teenColors.cardBorder);
+    document.documentElement.style.setProperty('--primary-border-color', '#FF336610');
+    document.documentElement.style.setProperty('--secondary-border-color', '#33CCFF10');
+  }, [theme, teenColors.heading, teenColors.text, teenColors.cardBg, teenColors.cardBorder]);
 
   const checkScrollability = () => {
     if (specialtiesRef.current) {
@@ -128,7 +139,7 @@ export default function SpecialtiesSection() {
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
           className="absolute top-40 -right-20 w-40 h-40 rounded-full border-4"
-          style={{ borderColor: `${teenColors.primary}10` }}
+          style={{ borderColor: 'var(--primary-border-color)' }} // Using CSS variable
           animate={{
             y: [0, -20, 0],
             rotate: [0, 10, 0],
@@ -141,7 +152,7 @@ export default function SpecialtiesSection() {
         />
         <motion.div 
           className="absolute bottom-20 -left-10 w-20 h-20 rounded-full border-4"
-          style={{ borderColor: `${teenColors.secondary}10` }}
+          style={{ borderColor: 'var(--secondary-border-color)' }} // Using CSS variable
           animate={{
             y: [0, 20, 0],
             rotate: [0, -10, 0],

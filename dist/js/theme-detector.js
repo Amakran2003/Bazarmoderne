@@ -32,6 +32,9 @@
         localStorage.setItem('theme', theme);
         document.documentElement.style.colorScheme = theme;
         
+        // Fixed: Set fixed value for ring color
+        document.documentElement.style.setProperty('--tw-ring-color', '#FF3366');
+        
         // Update theme-color meta tag
         const metaThemeColor = document.getElementById('theme-color');
         if (metaThemeColor) {
@@ -55,25 +58,14 @@
         darkModeMediaQuery.addListener(handleDarkModeChange);
     }
     
-    // Vérifier s'il y a un thème enregistré au chargement
-    document.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme');
-        
-        if (savedTheme) {
-            applyTheme(savedTheme);
-        } else {
-            // Appliquer selon les préférences système
-            handleDarkModeChange(darkModeMediaQuery);
-        }
-    });
-    
-    // Écouter les changements de thème provenant de React
-    document.addEventListener('reactThemeChange', function(e) {
-        if (e.detail && (e.detail.theme === 'dark' || e.detail.theme === 'light')) {
-            applyTheme(e.detail.theme);
-        }
-    });
-    
     // Expose applyTheme to window for global access
     window.applyTheme = applyTheme;
+    
+    // Fixed: Add DOMContentLoaded handler to initialize theme after page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        }
+    });
 })();

@@ -9,7 +9,7 @@
  * - Advanced hover effects
  * - Router Link integration
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -23,12 +23,14 @@ interface ThemedButtonProps {
 export default function ThemedButton({ to, variant, children }: ThemedButtonProps) {
   const { theme } = useTheme();
   
-  // Teen-friendly colors
-  const teenColors = {
-    primary: '#FF3366', // Vibrant pink/red
-    secondary: '#33CCFF', // Bright blue
-    accent: '#FFCC00', // Bright yellow
-  };
+  // Set fixed CSS variables on component mount
+  useEffect(() => {
+    // Use hard-coded color values directly
+    document.documentElement.style.setProperty('--tw-ring-color', '#FF3366');
+    document.documentElement.style.setProperty('--teen-primary-color', '#FF3366');
+    document.documentElement.style.setProperty('--teen-secondary-color', '#33CCFF');
+    document.documentElement.style.setProperty('--teen-accent-color', '#FFCC00');
+  }, []);
   
   // Common button classes
   const baseClasses = "inline-block px-6 sm:px-8 py-3 rounded-full font-medium transition-all duration-300 text-sm sm:text-base md:text-lg relative overflow-hidden group";
@@ -43,18 +45,18 @@ export default function ThemedButton({ to, variant, children }: ThemedButtonProp
           ? 'bg-[#1e1e1e] hover:bg-[#2a2a2a]' 
           : 'bg-white hover:bg-gray-50'
       }`;
-    
-  // Button styles
+
+  // Button styles using CSS variables instead of template literals
   const buttonStyles = {
     background: variant === 'primary' 
-      ? `linear-gradient(90deg, ${teenColors.primary}, ${teenColors.secondary})`
+      ? 'linear-gradient(90deg, var(--teen-primary-color), var(--teen-secondary-color))'
       : 'transparent',
-    borderColor: variant === 'secondary' ? teenColors.primary : 'transparent',
-    color: variant === 'secondary' ? teenColors.primary : '#ffffff',
+    borderColor: variant === 'secondary' ? 'var(--teen-primary-color)' : 'transparent',
+    color: variant === 'secondary' ? 'var(--teen-primary-color)' : '#ffffff',
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600,
     boxShadow: variant === 'primary' 
-      ? `0 4px 10px rgba(255, 51, 102, 0.3), 0 2px 4px rgba(51, 204, 255, 0.2)` 
+      ? '0 4px 10px rgba(255, 51, 102, 0.3), 0 2px 4px rgba(51, 204, 255, 0.2)' 
       : 'none',
   };
     
