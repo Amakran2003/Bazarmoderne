@@ -17,7 +17,7 @@
  */
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Beef } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react'; // Changed from Beef to ShoppingBag icon
 import { useNavigate } from 'react-router-dom';
 import './SplashScreen.css';
 
@@ -58,35 +58,98 @@ export default function SplashScreen({ onComplete, redirectTo }: SplashScreenPro
         // Ultimate fallback - direct hash change
         window.location.hash = '#/home';
       }
-    }, 1500); // 1.5 seconds animation
+    }, 2500); // Animation duration
     
     return () => clearTimeout(timer);
-  }, [onComplete, redirectTo, navigate]);
+  }, [navigate, onComplete, redirectTo]);
+  
+  const iconVariants = {
+    hidden: { 
+      scale: 0.2,
+      opacity: 0,
+      rotateY: -180
+    },
+    visible: { 
+      scale: 1,
+      opacity: 1,
+      rotateY: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      }
+    }
+  };
+  
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        delay: 0.5,
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
-  // Get the user's theme preference to match the splash screen
-  const isDarkMode = typeof window !== 'undefined' && 
-    (document.documentElement.classList.contains('dark') ||
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches));
-
+  // Updated color scheme for Le Bazar Moderne
+  const primaryColor = '#FF3366';
+  const secondaryColor = '#33CCFF';
+  
   return (
-    <div className={`splash-screen ${isDarkMode ? 'dark-mode' : ''}`}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="logo-container"
-      >
-        <motion.div className="logo flex items-center justify-center">
-          <Beef size={80} className="text-white" />
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.3 }}
+    <div className="splash-screen">
+      <div className="splash-content">
+        <motion.div
+          className="splash-icon"
+          initial="hidden"
+          animate="visible"
+          variants={iconVariants}
         >
-          Craft Burger Co.
-        </motion.h1>
-      </motion.div>
+          {/* Updated icon for Le Bazar Moderne */}
+          <ShoppingBag 
+            size={80} 
+            style={{ 
+              color: primaryColor,
+              filter: `drop-shadow(0 0 10px ${primaryColor}40)`
+            }}
+          />
+        </motion.div>
+        
+        <motion.div
+          className="splash-text"
+          initial="hidden"
+          animate="visible"
+          variants={textVariants}
+        >
+          {/* Updated branding text */}
+          <h1 style={{ color: primaryColor, marginBottom: '0.5rem' }}>Le Bazar Moderne</h1>
+          <p style={{ color: secondaryColor }}>Les produits rares à votre porte</p>
+        </motion.div>
+        
+        {/* New animated loading bar */}
+        <motion.div
+          className="loading-bar"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ 
+            width: "100%", 
+            opacity: [0, 1, 1, 0],
+            transition: { 
+              width: { duration: 2, ease: "easeInOut" },
+              opacity: { 
+                times: [0, 0.2, 0.8, 1],
+                duration: 2.5
+              }
+            }
+          }}
+          style={{
+            height: '3px',
+            background: `linear-gradient(90deg, ${primaryColor}, ${secondaryColor})`,
+            marginTop: '2rem',
+            borderRadius: '3px'
+          }}
+        />
+      </div>
     </div>
   );
-};
+}
