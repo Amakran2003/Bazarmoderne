@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" id="theme-color" />
     <meta name="color-scheme" content="light dark">
+    <!-- Add cache control meta tags to prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Le Bazar Moderne</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -80,10 +84,30 @@
       script.defer = true;
       document.head.appendChild(script);
     </script>
-    <script type="module" crossorigin src="/Bazarmoderne/assets/index-DSngebrm.js"></script>
-    <link rel="stylesheet" crossorigin href="/Bazarmoderne/assets/index-BeK7aKeq.css">
+    <script type="module" crossorigin src="/Bazarmoderne/assets/index-BwL8L0Fk.js"></script>
+    <link rel="stylesheet" crossorigin href="/Bazarmoderne/assets/index-BLTMpmXj.css">
   </head>
   <body>
     <div id="root"></div>
+    <!-- Cache busting script -->
+    <script>
+      // Force reload if the page was loaded from browser cache
+      if (performance.navigation.type === 2) {
+        location.reload(true);
+      }
+      
+      // Generate unique query parameter for all fetch requests
+      const originalFetch = window.fetch;
+      window.fetch = function(url, options) {
+        if (typeof url === 'string') {
+          // Only add timestamp to Sanity API calls
+          if (url.includes('o0j2x6nh')) {
+            const separator = url.includes('?') ? '&' : '?';
+            url = `${url}${separator}_ts=${new Date().getTime()}`;
+          }
+        }
+        return originalFetch(url, options);
+      };
+    </script>
   </body>
 </html>
