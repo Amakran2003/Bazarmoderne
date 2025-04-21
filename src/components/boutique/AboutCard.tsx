@@ -8,7 +8,7 @@ export default function AboutCard() {
   const teenColors = {
     primary: '#FF3366', // Vibrant pink/red
     secondary: '#33CCFF', // Bright blue
-    heading: theme === 'light' ? '#FF3366' : '#FF3366',
+    heading: theme === 'light' ? '#FF3366' : '#33CCFF',
     text: theme === 'light' ? '#333333' : '#f5f5f5',
     cardBg: theme === 'light' ? '#ffffff' : '#2d2d2d',
     gradient: `linear-gradient(90deg, #FF3366, #33CCFF)`,

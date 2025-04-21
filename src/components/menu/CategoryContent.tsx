@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MenuCategory } from '../../data/menuData';
+import { MenuCategory } from '../../types/products';
 import MenuItem from './MenuItem';
 
 interface CategoryContentProps {
@@ -9,6 +9,23 @@ interface CategoryContentProps {
 }
 
 export default function CategoryContent({ category, highlightedItem, highlightedItemRef }: CategoryContentProps) {
+  // Check if category has items
+  if (!category.items || category.items.length === 0) {
+    return (
+      <motion.div
+        key={category.name}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex justify-center items-center py-20"
+      >
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          Aucun produit disponible dans cette catégorie pour le moment.
+        </p>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       key={category.name}

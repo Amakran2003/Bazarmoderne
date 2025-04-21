@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { menuCategories } from '../data/menuData';
 import { motion } from 'framer-motion';
 
 // Import components
@@ -12,11 +11,15 @@ import MenuPageContainer from '../components/menu/MenuPageContainer';
 
 // Import hooks
 import useScrollToHighlighted from '../hooks/useScrollToHighlighted';
+import { useMenuCategories } from '../hooks/useProducts';
 
 export default function Menu() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
   const itemParam = searchParams.get('item');
+  
+  // Fetch menu categories from Sanity
+  const { categories: menuCategories, loading } = useMenuCategories();
   
   const [activeCategory, setActiveCategory] = useState('Boissons');
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null);
@@ -34,7 +37,7 @@ export default function Menu() {
     document.title = "Nos Produits | Le Bazar Moderne";
     
     // Update active category from URL parameter
-    if (categoryParam) {
+    if (categoryParam && menuCategories.length > 0) {
       const categoryExists = menuCategories.some(cat => cat.name === categoryParam);
       if (categoryExists) {
         setActiveCategory(categoryParam);
@@ -46,7 +49,15 @@ export default function Menu() {
       setHighlightedItem(itemParam);
       console.log('Item to highlight:', itemParam);
     }
-  }, [categoryParam, itemParam]);
+  }, [categoryParam, itemParam, menuCategories]);
+
+  // Set default active category when categories are loaded
+  useEffect(() => {
+    if (menuCategories.length > 0 && !categoryParam) {
+      // If no category param but we have categories, set the first one as active
+      setActiveCategory(menuCategories[0].name);
+    }
+  }, [menuCategories, categoryParam]);
 
   // Record that we've scrolled to this item when it changes
   useEffect(() => {
@@ -77,6 +88,16 @@ export default function Menu() {
     
     window.scrollTo(0, 0);
   };
+
+  if (loading) {
+    return (
+      <MenuPageContainer>
+        <div className="flex items-center justify-center py-20">
+          <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
+        </div>
+      </MenuPageContainer>
+    );
+  }
 
   return (
     <MenuPageContainer>

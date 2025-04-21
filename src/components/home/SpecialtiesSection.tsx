@@ -15,11 +15,12 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { specialties } from '../../data/menuData';
 import { useTheme } from '../../context/ThemeContext';
+import { useSpecialtyItems } from '../../hooks/useProducts';
 
 export default function SpecialtiesSection() {
   const { theme } = useTheme();
+  const { specialties, loading } = useSpecialtyItems();
   const specialtiesRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -97,7 +98,7 @@ export default function SpecialtiesSection() {
       
       return () => scrollContainer.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  }, [specialties]); // Re-run when specialties change
 
   const scroll = (direction: 'left' | 'right') => {
     if (specialtiesRef.current) {
@@ -195,162 +196,174 @@ export default function SpecialtiesSection() {
             />
           </motion.div>
           
-          <div className="hidden md:flex space-x-2">
-            <motion.button
-              onClick={() => scroll('left')}
-              className={`p-2 rounded-full ${!canScrollLeft && 'bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed'}`}
-              style={{ 
-                backgroundColor: canScrollLeft ? teenColors.primary : undefined,
-                color: canScrollLeft ? '#ffffff' : undefined 
-              }}
-              whileHover={canScrollLeft ? { scale: 1.1 } : {}}
-              whileTap={canScrollLeft ? { scale: 0.9 } : {}}
-              disabled={!canScrollLeft}
-            >
-              <ChevronLeft size={20} />
-            </motion.button>
-            <motion.button
-              onClick={() => scroll('right')}
-              className={`p-2 rounded-full ${!canScrollRight && 'bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed'}`}
-              style={{ 
-                backgroundColor: canScrollRight ? teenColors.primary : undefined,
-                color: canScrollRight ? '#ffffff' : undefined 
-              }}
-              whileHover={canScrollRight ? { scale: 1.1 } : {}}
-              whileTap={canScrollRight ? { scale: 0.9 } : {}}
-              disabled={!canScrollRight}
-            >
-              <ChevronRight size={20} />
-            </motion.button>
-          </div>
+          {!loading && specialties.length > 0 && (
+            <div className="hidden md:flex space-x-2">
+              <motion.button
+                onClick={() => scroll('left')}
+                className={`p-2 rounded-full ${!canScrollLeft && 'bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed'}`}
+                style={{ 
+                  backgroundColor: canScrollLeft ? teenColors.primary : undefined,
+                  color: canScrollLeft ? '#ffffff' : undefined 
+                }}
+                whileHover={canScrollLeft ? { scale: 1.1 } : {}}
+                whileTap={canScrollLeft ? { scale: 0.9 } : {}}
+                disabled={!canScrollLeft}
+              >
+                <ChevronLeft size={20} />
+              </motion.button>
+              <motion.button
+                onClick={() => scroll('right')}
+                className={`p-2 rounded-full ${!canScrollRight && 'bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed'}`}
+                style={{ 
+                  backgroundColor: canScrollRight ? teenColors.primary : undefined,
+                  color: canScrollRight ? '#ffffff' : undefined 
+                }}
+                whileHover={canScrollRight ? { scale: 1.1 } : {}}
+                whileTap={canScrollRight ? { scale: 0.9 } : {}}
+                disabled={!canScrollRight}
+              >
+                <ChevronRight size={20} />
+              </motion.button>
+            </div>
+          )}
         </div>
         
-        <div 
-          className="relative pt-6 pb-4" 
-          onMouseEnter={checkScrollability}
-          style={{ zIndex: 1 }}
-        >
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
+          </div>
+        ) : specialties.length === 0 ? (
+          <div className="text-center py-10">
+            <p>Aucune spécialité disponible pour le moment.</p>
+          </div>
+        ) : (
           <div 
-            ref={specialtiesRef} 
-            className="flex space-x-4 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory relative"
-            style={{ 
-              scrollbarWidth: 'none', 
-              msOverflowStyle: 'none'
-            }}
-            onScroll={checkScrollability}
+            className="relative pt-6 pb-4" 
+            onMouseEnter={checkScrollability}
+            style={{ zIndex: 1 }}
           >
-            {specialties.map((specialty, index) => (
-              <div
-                key={specialty.id}
-                className="flex-shrink-0 w-[250px] sm:w-[280px] snap-center relative"
-                style={{ isolation: 'isolate' }}
-              >
-                <Link 
-                  to={`/menu?category=${specialty.menuCategory}&item=${specialty.menuItemId}`}
-                  className="block h-full rounded-xl"
-                  style={{ position: 'relative', zIndex: 10, transformStyle: 'preserve-3d' }}
+            <div 
+              ref={specialtiesRef} 
+              className="flex space-x-4 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory relative"
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none'
+              }}
+              onScroll={checkScrollability}
+            >
+              {specialties.map((specialty, index) => (
+                <div
+                  key={specialty.id}
+                  className="flex-shrink-0 w-[250px] sm:w-[280px] snap-center relative"
+                  style={{ isolation: 'isolate' }}
                 >
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    whileHover={{ 
-                      y: -5, 
-                      zIndex: 999, 
-                      boxShadow: theme === 'light' 
-                        ? `0 15px 30px -5px rgba(255, 51, 102, 0.25), 0 10px 10px -5px rgba(51, 204, 255, 0.2)`
-                        : "0 15px 30px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.25)",
-                      rotateY: mousePosition.x > window.innerWidth / 2 ? -5 : 5,
-                      rotateX: mousePosition.y > window.innerHeight / 2 ? 5 : -5
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    className="rounded-xl overflow-hidden h-full"
-                    style={{
-                      backgroundColor: teenColors.cardBg,
-                      willChange: 'transform',
-                      position: 'relative',
-                      transformOrigin: 'center center',
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      borderRadius: '0.75rem',
-                      boxShadow: theme === 'light' 
-                        ? `0 4px 6px -1px rgba(255, 51, 102, 0.15), 0 2px 4px -1px rgba(51, 204, 255, 0.1)` 
-                        : "0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3)",
-                      border: `1px solid ${teenColors.cardBorder}`
-                    }}
+                  <Link 
+                    to={`/menu?category=${specialty.menuCategory}&item=${specialty.menuItemId}`}
+                    className="block h-full rounded-xl"
+                    style={{ position: 'relative', zIndex: 10, transformStyle: 'preserve-3d' }}
                   >
-                    <div className="relative overflow-hidden rounded-t-xl">
-                      <motion.div 
-                        className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 z-10 flex items-end p-4">
-                        <p className="text-white text-xs font-medium">Découvrir</p>
-                      </motion.div>
-                      <motion.img 
-                        src={specialty.image} 
-                        alt={specialty.name} 
-                        className="w-full h-36 sm:h-48 object-cover"
-                        style={{ 
-                          transform: 'translateZ(0)',
-                          borderTopLeftRadius: '0.75rem',
-                          borderTopRightRadius: '0.75rem',
-                        }}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.4 }}
-                      />
-                    </div>
-                    <div className="p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2 flex items-center"
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      whileHover={{ 
+                        y: -5, 
+                        zIndex: 999, 
+                        boxShadow: theme === 'light' 
+                          ? `0 15px 30px -5px rgba(255, 51, 102, 0.25), 0 10px 10px -5px rgba(51, 204, 255, 0.2)`
+                          : "0 15px 30px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.25)",
+                        rotateY: mousePosition.x > window.innerWidth / 2 ? -5 : 5,
+                        rotateX: mousePosition.y > window.innerHeight / 2 ? 5 : -5
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      className="rounded-xl overflow-hidden h-full"
+                      style={{
+                        backgroundColor: teenColors.cardBg,
+                        willChange: 'transform',
+                        position: 'relative',
+                        transformOrigin: 'center center',
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                        borderRadius: '0.75rem',
+                        boxShadow: theme === 'light' 
+                          ? `0 4px 6px -1px rgba(255, 51, 102, 0.15), 0 2px 4px -1px rgba(51, 204, 255, 0.1)` 
+                          : "0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3)",
+                        border: `1px solid ${teenColors.cardBorder}`
+                      }}
+                    >
+                      <div className="relative overflow-hidden rounded-t-xl">
+                        <motion.div 
+                          className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 z-10 flex items-end p-4">
+                          <p className="text-white text-xs font-medium">Découvrir</p>
+                        </motion.div>
+                        <motion.img 
+                          src={specialty.image} 
+                          alt={specialty.name} 
+                          className="w-full h-36 sm:h-48 object-cover"
                           style={{ 
-                            fontFamily: "'Montserrat', sans-serif",
-                            color: teenColors.heading,
-                            textShadow: theme === 'dark' ? "0px 1px 1px rgba(0, 0, 0, 0.5)" : "none" 
-                          }}>
-                        {specialty.name}
-                      </h3>
-                      <p className="text-xs sm:text-sm"
-                         style={{ 
-                           fontFamily: "'Montserrat', sans-serif",
-                           color: teenColors.text,
-                         }}>
-                        {specialty.description}
-                      </p>
-                      <span 
-                        className="mt-3 sm:mt-4 inline-block text-xs sm:text-sm font-medium hover:underline transition-colors duration-200"
-                        style={{ color: teenColors.heading }}
-                      >
-                        Voir les détails
-                        <motion.span 
-                          animate={{ x: [0, 5, 0] }}
-                          transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                          className="inline-block ml-1"
+                            transform: 'translateZ(0)',
+                            borderTopLeftRadius: '0.75rem',
+                            borderTopRightRadius: '0.75rem',
+                          }}
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.4 }}
+                        />
+                      </div>
+                      <div className="p-4 sm:p-5">
+                        <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2 flex items-center"
+                            style={{ 
+                              fontFamily: "'Montserrat', sans-serif",
+                              color: teenColors.heading,
+                              textShadow: theme === 'dark' ? "0px 1px 1px rgba(0, 0, 0, 0.5)" : "none" 
+                            }}>
+                          {specialty.name}
+                        </h3>
+                        <p className="text-xs sm:text-sm"
+                           style={{ 
+                             fontFamily: "'Montserrat', sans-serif",
+                             color: teenColors.text,
+                           }}>
+                          {specialty.description}
+                        </p>
+                        <span 
+                          className="mt-3 sm:mt-4 inline-block text-xs sm:text-sm font-medium hover:underline transition-colors duration-200"
+                          style={{ color: teenColors.heading }}
                         >
-                          →
-                        </motion.span>
-                      </span>
-                    </div>
-                  </motion.div>
-                </Link>
-              </div>
-            ))}
+                          Voir les détails
+                          <motion.span 
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                            className="inline-block ml-1"
+                          >
+                            →
+                          </motion.span>
+                        </span>
+                      </div>
+                    </motion.div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+            
+            {/* Mobile indicator dots */}
+            <div className="flex justify-center space-x-2 mt-4 md:hidden">
+              {specialties.map((_, index) => (
+                <motion.div
+                  key={index}
+                  className={`w-2 h-2 rounded-full ${index !== activeIndex && 'bg-gray-300 dark:bg-gray-600'}`}
+                  style={{ 
+                    backgroundColor: index === activeIndex ? teenColors.heading : undefined,
+                    cursor: 'pointer',
+                    boxShadow: index === activeIndex ? '0 0 3px rgba(0, 0, 0, 0.3)' : 'none'
+                  }}
+                  animate={{ scale: index === activeIndex ? 1.2 : 1 }}
+                  transition={{ duration: 0.2 }}
+                />
+              ))}
+            </div>
           </div>
-          
-          {/* Mobile indicator dots */}
-          <div className="flex justify-center space-x-2 mt-4 md:hidden">
-            {specialties.map((_, index) => (
-              <motion.div
-                key={index}
-                className={`w-2 h-2 rounded-full ${index !== activeIndex && 'bg-gray-300 dark:bg-gray-600'}`}
-                style={{ 
-                  backgroundColor: index === activeIndex ? teenColors.heading : undefined,
-                  cursor: 'pointer',
-                  boxShadow: index === activeIndex ? '0 0 3px rgba(0, 0, 0, 0.3)' : 'none'
-                }}
-                animate={{ scale: index === activeIndex ? 1.2 : 1 }}
-                transition={{ duration: 0.2 }}
-              />
-            ))}
-          </div>
-        </div>
+        )}
       </div>
     </motion.section>
   )

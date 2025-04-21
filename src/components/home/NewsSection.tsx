@@ -13,11 +13,12 @@
  */
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { newsItems } from '../../data/menuData';
 import { useTheme } from '../../context/ThemeContext';
+import { useNewsItems } from '../../hooks/useProducts';
 
 export default function NewsSection() {
   const { theme } = useTheme();
+  const { newsItems, loading } = useNewsItems();
 
   // Teen-friendly colors - matching the rest of the site
   const teenColors = {
@@ -91,115 +92,125 @@ export default function NewsSection() {
           </div>
         </motion.div>
         
-        <div className="max-w-2xl mx-auto relative z-10">
-          {newsItems.map((news, index) => (
-            <Link
-              key={news.id}
-              to={news.link}
-              onClick={() => window.scrollTo(0, 0)}
-              className="block mb-8 last:mb-0"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ 
-                  y: -5,
-                  zIndex: 100,
-                  boxShadow: theme === 'light' 
-                    ? `0 15px 30px -5px rgba(255, 51, 102, 0.25), 0 10px 10px -5px rgba(51, 204, 255, 0.2)`
-                    : "0 15px 30px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.25)"
-                }}
-                className="rounded-xl overflow-hidden group"
-                style={{ 
-                  backgroundColor: teenColors.cardBg,
-                  willChange: 'transform',
-                  border: `1px solid ${teenColors.cardBorder}`,
-                  boxShadow: theme === 'light' 
-                    ? `0 4px 6px -1px rgba(255, 51, 102, 0.15), 0 2px 4px -1px rgba(51, 204, 255, 0.1)` 
-                    : "0 4px 8px rgba(0, 0, 0, 0.4)" 
-                }}
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
+          </div>
+        ) : newsItems.length === 0 ? (
+          <div className="text-center py-10">
+            <p>Aucune nouveauté disponible pour le moment.</p>
+          </div>
+        ) : (
+          <div className="max-w-2xl mx-auto relative z-10">
+            {newsItems.map((news, index) => (
+              <Link
+                key={news.id}
+                to={news.link}
+                onClick={() => window.scrollTo(0, 0)}
+                className="block mb-8 last:mb-0"
               >
-                <div className="relative">
-                  <img 
-                    src={news.image} 
-                    alt={news.title} 
-                    className="w-full h-48 sm:h-56 md:h-64 object-cover"
-                  />
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    viewport={{ once: true }}
-                  />
-                  <motion.div 
-                    className="absolute bottom-4 right-4 px-3 py-1 rounded-full text-xs font-medium"
-                    style={{
-                      background: teenColors.gradient,
-                      color: 'white',
-                      fontFamily: "'Montserrat', sans-serif",
-                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.15)"
-                    }}
-                    initial={{ x: 20, opacity: 0 }}
-                    whileInView={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    viewport={{ once: true }}
-                  >
-                    {news.date}
-                  </motion.div>
-                </div>
-                
-                <div className="p-5">
-                  <div className="mb-3">
-                    <h3 
-                      className="text-lg sm:text-xl font-bold mb-2"
-                      style={{ 
-                        fontFamily: "'Poppins', sans-serif",
-                        color: teenColors.heading,
-                        textShadow: theme === 'dark' ? "0px 1px 1px rgba(0, 0, 0, 0.5)" : "none" 
-                      }}>
-                      {news.title}
-                    </h3>
-                    <div 
-                      className="w-10 h-1 rounded-full"
-                      style={{ background: teenColors.gradient }} 
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  whileHover={{ 
+                    y: -5,
+                    zIndex: 100,
+                    boxShadow: theme === 'light' 
+                      ? `0 15px 30px -5px rgba(255, 51, 102, 0.25), 0 10px 10px -5px rgba(51, 204, 255, 0.2)`
+                      : "0 15px 30px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.25)"
+                  }}
+                  className="rounded-xl overflow-hidden group"
+                  style={{ 
+                    backgroundColor: teenColors.cardBg,
+                    willChange: 'transform',
+                    border: `1px solid ${teenColors.cardBorder}`,
+                    boxShadow: theme === 'light' 
+                      ? `0 4px 6px -1px rgba(255, 51, 102, 0.15), 0 2px 4px -1px rgba(51, 204, 255, 0.1)` 
+                      : "0 4px 8px rgba(0, 0, 0, 0.4)" 
+                  }}
+                >
+                  <div className="relative">
+                    <img 
+                      src={news.image} 
+                      alt={news.title} 
+                      className="w-full h-48 sm:h-56 md:h-64 object-cover"
                     />
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                      viewport={{ once: true }}
+                    />
+                    <motion.div 
+                      className="absolute bottom-4 right-4 px-3 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        background: teenColors.gradient,
+                        color: 'white',
+                        fontFamily: "'Montserrat', sans-serif",
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.15)"
+                      }}
+                      initial={{ x: 20, opacity: 0 }}
+                      whileInView={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      viewport={{ once: true }}
+                    >
+                      {news.date}
+                    </motion.div>
                   </div>
-                  <p 
-                    className="text-sm sm:text-base"
-                    style={{ 
-                      fontFamily: "'Montserrat', sans-serif",
-                      color: teenColors.text 
-                    }}>
-                    {news.description}
-                  </p>
                   
-                  <div className="mt-4">
-                    <span 
-                      className="inline-flex items-center text-sm sm:text-base font-medium group-hover:underline"
+                  <div className="p-5">
+                    <div className="mb-3">
+                      <h3 
+                        className="text-lg sm:text-xl font-bold mb-2"
+                        style={{ 
+                          fontFamily: "'Poppins', sans-serif",
+                          color: teenColors.heading,
+                          textShadow: theme === 'dark' ? "0px 1px 1px rgba(0, 0, 0, 0.5)" : "none" 
+                        }}>
+                        {news.title}
+                      </h3>
+                      <div 
+                        className="w-10 h-1 rounded-full"
+                        style={{ background: teenColors.gradient }} 
+                      />
+                    </div>
+                    <p 
+                      className="text-sm sm:text-base"
                       style={{ 
                         fontFamily: "'Montserrat', sans-serif",
-                        color: teenColors.heading,
-                        textShadow: theme === 'dark' ? "0px 1px 1px rgba(0, 0, 0, 0.5)" : "none" 
-                      }}
-                    >
-                      En savoir plus 
-                      <motion.span 
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                        className="inline-block ml-1"
+                        color: teenColors.text 
+                      }}>
+                      {news.description}
+                    </p>
+                    
+                    <div className="mt-4">
+                      <span 
+                        className="inline-flex items-center text-sm sm:text-base font-medium group-hover:underline"
+                        style={{ 
+                          fontFamily: "'Montserrat', sans-serif",
+                          color: teenColors.heading,
+                          textShadow: theme === 'dark' ? "0px 1px 1px rgba(0, 0, 0, 0.5)" : "none" 
+                        }}
                       >
-                        →
-                      </motion.span>
-                    </span>
+                        En savoir plus 
+                        <motion.span 
+                          animate={{ x: [0, 5, 0] }}
+                          transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                          className="inline-block ml-1"
+                        >
+                          →
+                        </motion.span>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            </Link>
-          ))}
-        </div>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </motion.section>
   );
